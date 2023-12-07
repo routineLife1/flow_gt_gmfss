@@ -73,7 +73,6 @@ def load_flow(flofile, tenImg):
     return flo
 
 
-# 加载图像
 def load_image(imfile):
     img = cv2.imread(imfile)
     H, W, _ = img.shape
