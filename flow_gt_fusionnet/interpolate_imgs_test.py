@@ -101,11 +101,16 @@ for i in range(1, len(imgs)):
     flow01, flow10 = load_flow(flo01, I0), load_flow(flo10, I0)
     output = model.inference(I0, I1, model.reuse(I0, I1, flow01=flow01, flow10=flow10), timestep=0.5)
     I0 = I0.squeeze(0).permute(1, 2, 0).cpu().float().numpy() * 255.
-    I1 = I1.squeeze(0).permute(1, 2, 0).cpu().float().numpy() * 255.
     output = output.squeeze(0).permute(1, 2, 0).cpu().float().numpy() * 255.
     cv2.imwrite(f'results/{cnt}.png', cv2.resize(I0, (ori_w, ori_h)))
     cv2.imwrite(f'results/{cnt + 1}.png', cv2.resize(output, (ori_w, ori_h)))
     cnt += 2
     i0 = i1
+    pbar.update(1)
     if i != len(imgs) - 1:
         flo01, flo10 = flo_forward[i], flo_backward[i]
+
+# last frame
+I1 = I1.squeeze(0).permute(1, 2, 0).cpu().float().numpy() * 255.
+cv2.imwrite(f'results/{cnt}.png', cv2.resize(I1, (ori_w, ori_h)))
+pbar.update(1)
